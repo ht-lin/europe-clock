@@ -25,6 +25,12 @@ const ChoseCity = function ({ setChosedCity, setIsChoseCity }: Props) {
   const { register, handleSubmit } = useForm<FormData>();
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
+    if (!data.chosedCities) {
+      setChosedCity([]);
+      setIsChoseCity(false);
+      return;
+    }
+
     Array.isArray(data.chosedCities)
       ? setChosedCity(data.chosedCities.map((i) => cities[i]))
       : setChosedCity([cities[data.chosedCities]]);

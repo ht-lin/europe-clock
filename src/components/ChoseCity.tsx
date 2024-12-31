@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import moment from "moment-timezone";
 import { CityProps } from "../types/cityProps";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { DevTool } from "@hookform/devtools";
 
 type Props = {
   setChosedCity: (value: CityProps[]) => void;
@@ -22,19 +23,14 @@ const ChoseCity = function ({ setChosedCity, setIsChoseCity }: Props) {
     chosedCities: number[];
   };
 
-  const { register, handleSubmit } = useForm<FormData>();
+  const { register, handleSubmit, control } = useForm<FormData>({
+    defaultValues: {
+      chosedCities: [],
+    },
+  });
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    if (!data.chosedCities) {
-      setChosedCity([]);
-      setIsChoseCity(false);
-      return;
-    }
-
-    Array.isArray(data.chosedCities)
-      ? setChosedCity(data.chosedCities.map((i) => cities[i]))
-      : setChosedCity([cities[data.chosedCities]]);
-
+    setChosedCity(data.chosedCities.map((i) => cities[i]));
     setIsChoseCity(false);
   };
 
@@ -83,6 +79,7 @@ const ChoseCity = function ({ setChosedCity, setIsChoseCity }: Props) {
           )}
         </Fragment>
       ))}
+      <DevTool control={control} />
     </div>
   );
 };
